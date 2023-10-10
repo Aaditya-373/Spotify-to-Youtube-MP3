@@ -9,6 +9,10 @@ app = Flask(__name__)
 app.secret_key = 'rameshasfiofafapooluwognqwkefsunniaefgnjegaa'
 app.config['SESSION_COOKIE_NAME'] = 'spotifyprojcookei'
 @app.route('/')
+def home():
+    return "Welcome <a href = '/login'>Click to Login with Spotify</a>"
+
+@app.route('/login')
 def login():
     sp_oauth = create_spotify_oauth()
     authorization_url = sp_oauth.get_authorize_url()
@@ -32,7 +36,7 @@ def getuserTracks():
         token_info = get_token()
     except:
         print("USER NOT LOGGED IN")
-        redirect('/')
+        redirect('/login')
     sp = spotipy.Spotify(auth= token_info['access_token'])
     
     playlists = sp.current_user_playlists(limit=20,offset = 0)
@@ -51,16 +55,10 @@ def getuserTracks():
         playlist = input("Enter the playlist you want to download:")
         for pn, s in user_data.items():
            writer.writerow([pn])
-    with open('playlist_title_data.txt','w') as file:
-        for pn,s in user_data.items():
-            file.writelines(pn)
+    
             
     return user_data
 
-        
-
-            
-    
 def get_token():
     token_info = session.get('token_info',None)
     if not token_info:
