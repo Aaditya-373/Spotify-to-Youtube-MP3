@@ -1,6 +1,6 @@
 from flask import Flask,url_for,redirect,request,session
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth,SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials,SpotifyOAuth
 import requests
 import time
 import csv
@@ -49,9 +49,11 @@ def getuserTracks():
     with open('playlist_data.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         playlist = input("Enter the playlist you want to download:")
-        for pn, s in user_data.items():\
-           
-            writer.writerow([pn])
+        for pn, s in user_data.items():
+           writer.writerow([pn])
+    with open('playlist_title_data.txt','w') as file:
+        for pn,s in user_data.items():
+            file.writelines(pn)
             
     return user_data
 
